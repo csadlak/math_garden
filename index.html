@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+
+    <link rel='stylesheet' href='css/styles.css'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Just+Another+Hand&display=swap'>
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <script src='vendor/opencv.js'></script>
+    <script src='js/drawing.js'></script>
+    <script src='js/processing.js'></script>
+    <script src='js/math.js'></script>
+
+
+</head>
+
+<body>
+    <div id='titleSection' class='container'>
+        <h1 id='title'>Math Garden</h1>
+        <button id='restartGame' class='btn' style='font-size:50px;display:none;'>Restart</button>
+    </div>
+    <div id='inputSection' class='container'>
+        <h2 id='question'><span id='n1'>3</span> + <span id='n2'>2</span> = </h2>
+        <canvas id='my-canvas' width="150" height="150"></canvas>
+        <div style='position:relative;display:inline;'>
+            <img id='eraseCanvas' src='images/refresh.png' style='cursor:pointer;position:absolute;top:4px;right:-28px;' alt='refresh' title='Erase Blackboard'>
+            <img id='nextQuestion' src='images/next.png' style='cursor:pointer;position:absolute;top:130px;right:-28px;' alt='refresh' title='Skip Question'>
+        </div>
+    </div>
+    <div id='buttonSection' class='container'>
+        <button id='checkAnswer' class='btn' style='display:inline;'>Check Answer</button>
+        <button id='tryAgain' class='btn' style='display:none;'>
+            Wrong Answer!
+            <div style='font-size:30px;'>Erase the blackboard and try again.</div>
+        </button>
+    </div>
+
+    <script>
+    loadModel();
+    prepareCanvas();
+    nextQuestion();
+
+    document.getElementById('checkAnswer').addEventListener('click', function () {
+        if (checkAnswer()) {
+            clearCanvas();
+            nextQuestion();
+        } else {
+            document.getElementById('checkAnswer').style.display = 'none';
+            document.getElementById('tryAgain').style.display = 'inline';
+        }
+    });
+    document.getElementById('tryAgain').addEventListener('click', function () {
+        document.getElementById('checkAnswer').style.display = 'inline';
+        document.getElementById('tryAgain').style.display = 'none';
+        clearCanvas();
+    });
+    document.getElementById('eraseCanvas').addEventListener('click', function () {
+        document.getElementById('checkAnswer').style.display = 'inline';
+        document.getElementById('tryAgain').style.display = 'none';
+        clearCanvas();
+    });
+    document.getElementById('nextQuestion').addEventListener('click', function () {
+        document.getElementById('checkAnswer').style.display = 'inline';
+        document.getElementById('tryAgain').style.display = 'none';
+        clearCanvas();
+        nextQuestion();
+    });
+    document.getElementById('restartGame').addEventListener('click', function () {
+        restartGame();
+    });
+    </script>
+</body>
+</html>
